@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Octave Auger's Special Package — Cronofy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1117;
+  --dark: #0a0e1a;
+  --card: #1e2a3a;
+  --accent: #00c9b1;
+  --accent-dark: #009e8c;
+  --blue: #3b82f6;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --green: #10b981;
+  --white: #ffffff;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --off-dark: #0f1923;
+  --border: rgba(0,201,177,0.15);
+  --nav-width: 220px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.7;
+}
+h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; line-height: 1.2; }
+
+/* SIDE NAV */
+#side-nav {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: var(--nav-width);
+  background: rgba(10,14,26,0.97);
+  border-right: 1px solid var(--border);
+  padding: 28px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  z-index: 100;
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
+}
+#side-nav .nav-logo {
+  font-family: 'DM Serif Display', serif;
+  color: var(--accent);
+  font-size: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+.nav-dot {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+.nav-dot:hover { background: rgba(0,201,177,0.08); color: var(--text); }
+.nav-dot.active { color: var(--accent); background: rgba(0,201,177,0.1); }
+.nav-dot::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+.nav-dot.active::before { opacity: 1; background: var(--accent); }
+
+/* MAIN */
+main { margin-left: var(--nav-width); }
+.section-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 48px;
+}
+
+/* HERO */
+#hero {
+  background: linear-gradient(145deg, var(--dark) 0%, #0d1117 50%, #0a1520 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+#hero::before {
+  content: '';
+  position: absolute;
+  top: -150px; right: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(0,201,177,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+#hero::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: 30%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-block;
+  background: rgba(0,201,177,0.12);
+  border: 1px solid rgba(0,201,177,0.3);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+}
+#hero h1 {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+  color: var(--white);
+  margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+#hero h1 .teal { color: var(--accent); }
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin-bottom: 36px;
+  line-height: 1.8;
+}
+.hero-goal {
+  background: rgba(0,201,177,0.07);
+  border-left: 3px solid var(--accent);
+  padding: 14px 22px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 36px;
+  font-size: 0.92rem;
+  color: var(--text);
+  max-width: 580px;
+}
+.hero-goal strong { color: var(--accent); }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', sans-serif;
+}
+.btn-primary { background: var(--accent); color: #000; }
+.btn-primary:hover { background: var(--accent-dark); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn-outline:hover { background: rgba(0,201,177,0.08); }
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+.credit { font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+
+/* SECTION COMMON */
+section { position: relative; }
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  color: var(--white);
+  margin-bottom: 20px;
+}
+.section-divider {
+  width: 40px; height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin-bottom: 32px;
+}
+.section-lead {
+  font-size: 0.97rem;
+  color: var(--text-muted);
+  max-width: 680px;
+  margin-bottom: 36px;
+  line-height: 1.8;
+}
+
+/* VIDEO */
+#video { background: var(--off-dark); }
+.video-wrap {
+  position: relative;
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  aspect-ratio: 16/9;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  color: var(--text-muted);
+  gap: 14px;
+}
+.play-ring {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(0,201,177,0.12);
+  border: 2px solid rgba(0,201,177,0.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+}
+.video-placeholder p { font-size: 0.88rem; text-align: center; max-width: 280px; line-height: 1.6; }
+
+/* WARNING BANNER */
+#warning {
+  background: linear-gradient(135deg, #140808 0%, #160d06 100%);
+  border-top: 1px solid rgba(239,68,68,0.3);
+  border-bottom: 1px solid rgba(239,68,68,0.3);
+}
+.warning-inner { display: flex; gap: 24px; align-items: flex-start; }
+.warning-icon { font-size: 2.2rem; flex-shrink: 0; padding-top: 4px; }
+.warning-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ef4444;
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
+.warning-text p { color: var(--text); font-size: 0.93rem; line-height: 1.8; margin-bottom: 10px; }
+.warning-text p:last-child { margin-bottom: 0; }
+.warning-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.2);
+  border-radius: 6px;
+  padding: 7px 14px;
+  margin-top: 12px;
+  font-size: 0.83rem;
+  color: #fca5a5;
+  font-weight: 500;
+}
+
+/* HOW THIS HELPS */
+#helps { background: var(--navy); }
+.helps-card {
+  background: linear-gradient(135deg, rgba(0,201,177,0.07) 0%, rgba(0,201,177,0.02) 100%);
+  border: 1px solid rgba(0,201,177,0.18);
+  border-radius: 12px;
+  padding: 36px 40px;
+}
+.helps-list { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+.helps-list li {
+  display: flex; gap: 14px; align-items: flex-start;
+  font-size: 0.95rem; color: var(--text); line-height: 1.7;
+}
+.helps-list li .arrow { color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.helps-list li strong { color: var(--white); }
+
+/* WHAT'S INSIDE */
+#inside { background: var(--off-dark); }
+.inside-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 14px;
+}
+.inside-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.inside-card:hover { border-color: rgba(0,201,177,0.35); transform: translateY(-2px); }
+.inside-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.inside-card h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+.inside-card p { font-size: 0.79rem; color: var(--text-muted); line-height: 1.6; }
+
+/* WHY NOW */
+#why-now { background: var(--navy); }
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+.why-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 18px;
+  transition: border-color 0.2s;
+}
+.why-card:hover { border-color: rgba(0,201,177,0.3); }
+.why-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.why-card h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.83rem;
+  color: var(--white);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.why-card p { font-size: 0.79rem; color: var(--text-muted); line-height: 1.6; }
+
+/* CREDIBILITY */
+#credibility { background: var(--off-dark); }
+.cred-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.cred-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 30px 22px;
+  text-align: center;
+}
+.cred-stat {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.6rem;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.cred-box p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
+
+/* HOW WE WORK */
+#how-we-work { background: var(--navy); }
+.steps-list { list-style: none; }
+.step-item {
+  display: flex; gap: 22px; align-items: flex-start;
+  padding: 22px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.step-item:last-child { border-bottom: none; }
+.step-num {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(0,201,177,0.1);
+  border: 1.5px solid rgba(0,201,177,0.3);
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.step-item h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--white);
+  margin-bottom: 5px;
+}
+.step-item p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.7; }
+
+/* MID CTA */
+#mid-cta {
+  background: linear-gradient(135deg, #003830 0%, #004d42 50%, #003530 100%);
+  border-top: 1px solid rgba(0,201,177,0.18);
+  border-bottom: 1px solid rgba(0,201,177,0.18);
+}
+.mid-cta-inner { text-align: center; }
+.mid-cta-inner h2 { color: var(--white); margin-bottom: 14px; }
+.mid-cta-inner p { color: rgba(255,255,255,0.72); margin-bottom: 30px; font-size: 0.95rem; }
+.mid-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* LEAK MAP */
+#leak-map { background: var(--dark); }
+.leak-wrap {
+  background: #060910;
+  border: 1px solid rgba(0,201,177,0.18);
+  border-radius: 12px;
+  padding: 28px 24px;
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+.leak-wrap pre {
+  font-family: 'Courier New', 'Lucida Console', monospace;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--accent);
+  white-space: pre;
+}
+.s-red { color: #ef4444 !important; font-weight: 700; }
+.s-amber { color: #f59e0b !important; font-weight: 700; }
+.s-green { color: #10b981 !important; font-weight: 700; }
+
+/* TABLES */
+.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 8px; }
+.dark-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.dark-table th {
+  background: rgba(0,201,177,0.09);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.dark-table td {
+  padding: 11px 14px;
+  color: var(--text);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  line-height: 1.6;
+  vertical-align: top;
+}
+.dark-table tr:last-child td { border-bottom: none; }
+.dark-table tr:hover td { background: rgba(255,255,255,0.015); }
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.b-red { background: rgba(239,68,68,0.14); color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+.b-amber { background: rgba(245,158,11,0.14); color: #f59e0b; border: 1px solid rgba(245,158,11,0.25); }
+.b-green { background: rgba(16,185,129,0.14); color: #10b981; border: 1px solid rgba(16,185,129,0.25); }
+.b-blue { background: rgba(59,130,246,0.14); color: #3b82f6; border: 1px solid rgba(59,130,246,0.25); }
+
+/* FUNNEL ECONOMICS */
+#funnel-economics { background: var(--off-dark); }
+
+/* MONEY LEVERS */
+#money-levers { background: var(--navy); }
+
+/* FUNNEL CASCADE */
+#funnel-cascade { background: var(--dark); }
+.cascade-stack { display: flex; flex-direction: column; gap: 4px; }
+.c-layer {
+  border-radius: 12px;
+  padding: 28px 32px;
+  position: relative;
+}
+.c-arrow {
+  text-align: center;
+  color: var(--accent);
+  font-size: 1.1rem;
+  padding: 4px 0;
+  line-height: 1;
+}
+.c-top { background: rgba(0,201,177,0.07); border: 1px solid rgba(0,201,177,0.18); }
+.c-mid { background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.18); }
+.c-bot { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.18); }
+.c-sale { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.18); }
+.c-layer h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.c-top h4 { color: var(--accent); }
+.c-mid h4 { color: var(--blue); }
+.c-bot h4 { color: var(--amber); }
+.c-sale h4 { color: var(--green); }
+.c-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+.c-col h5 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.c-col p { font-size: 0.83rem; color: var(--text); line-height: 1.65; }
+
+/* COMPETITIVE MAP */
+#competitive-map { background: var(--off-dark); }
+.comp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+.comp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px 22px;
+}
+.comp-card h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.97rem;
+  color: var(--white);
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.comp-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+.comp-label.weak { color: #ef4444; }
+.comp-label.win { color: #10b981; }
+.comp-card p { font-size: 0.81rem; color: var(--text-muted); line-height: 1.65; }
+
+/* 90-DAY PLAN */
+#sprint-plan { background: var(--navy); }
+
+/* EMAIL PREVIEWS */
+#email-previews { background: var(--dark); }
+.email-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.email-preview {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.email-head {
+  background: rgba(0,201,177,0.07);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.email-meta { font-size: 0.74rem; color: var(--text-muted); margin-bottom: 3px; }
+.email-subject { font-weight: 700; font-size: 0.9rem; color: var(--white); }
+.email-preview-line { font-size: 0.74rem; color: var(--accent); margin-top: 3px; font-style: italic; }
+.email-body { padding: 18px; font-size: 0.83rem; color: var(--text); line-height: 1.8; }
+.email-body p { margin-bottom: 9px; }
+.email-body p:last-child { margin-bottom: 0; }
+.email-foot {
+  padding: 11px 18px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.pss-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(16,185,129,0.12);
+  border: 1px solid rgba(16,185,129,0.28);
+  color: #10b981;
+  padding: 4px 11px;
+  border-radius: 18px;
+  font-size: 0.77rem;
+  font-weight: 700;
+}
+.pss-verdict { font-size: 0.74rem; color: var(--text-muted); }
+.pss-table { width: 100%; border-collapse: collapse; font-size: 0.79rem; margin-top: 10px; }
+.pss-table td { padding: 5px 0; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); }
+.pss-table td:last-child { color: var(--accent); text-align: right; font-weight: 600; }
+.pss-table tr:last-child td { border-bottom: none; color: var(--white); font-weight: 700; }
+
+/* KEY RESULTS */
+#key-results { background: var(--off-dark); }
+.results-note { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px; font-style: italic; }
+
+/* CASE STUDY */
+#case-study { background: var(--navy); }
+.case-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px;
+}
+.case-stat {
+  font-family: 'DM Serif Display', serif;
+  font-size: 4rem;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.case-sub { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; }
+.case-card h3 { color: var(--white); font-size: 1.3rem; margin-bottom: 18px; }
+.case-card p { font-size: 0.9rem; color: var(--text); line-height: 1.8; margin-bottom: 13px; }
+.case-card p:last-child { margin-bottom: 0; }
+
+/* GROWTH LOOPS */
+#growth-loops { background: var(--dark); }
+.loops-stack { display: flex; flex-direction: column; gap: 18px; }
+.loop-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px 30px;
+}
+.loop-tag {
+  display: inline-block;
+  background: rgba(0,201,177,0.1);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 1px;
+  padding: 3px 11px;
+  border-radius: 11px;
+  margin-bottom: 10px;
+}
+.loop-card h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.97rem;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.loop-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; }
+
+/* FAQS */
+#faqs { background: var(--off-dark); }
+.faq-stack { display: flex; flex-direction: column; gap: 7px; }
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.faq-item.open { border-color: rgba(0,201,177,0.3); }
+.faq-q {
+  width: 100%; background: none; border: none;
+  padding: 18px 22px;
+  text-align: left;
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.93rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  transition: color 0.2s;
+}
+.faq-q:hover { color: var(--accent); }
+.faq-chevron {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(0,201,177,0.08);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 0.75rem; flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+.faq-item.open .faq-a { max-height: 500px; }
+.faq-a-inner {
+  padding: 0 22px 18px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+/* ABOUT + OFFER */
+#about { background: var(--navy); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.bio-card, .offer-card {
+  border-radius: 12px;
+  padding: 30px;
+}
+.bio-card { background: var(--card); border: 1px solid var(--border); }
+.offer-card {
+  background: linear-gradient(135deg, rgba(0,201,177,0.07) 0%, rgba(0,201,177,0.02) 100%);
+  border: 1px solid rgba(0,201,177,0.22);
+}
+.bio-card h3 { color: var(--white); font-size: 1.3rem; margin-bottom: 4px; }
+.bio-subtitle { color: var(--accent); font-size: 0.82rem; margin-bottom: 18px; }
+.bio-card p { font-size: 0.87rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 16px; }
+.bio-stats { display: flex; flex-direction: column; gap: 9px; }
+.bio-stat {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 0.84rem;
+}
+.bio-stat strong { color: var(--accent); flex-shrink: 0; }
+.bio-stat span { color: var(--text-muted); line-height: 1.5; }
+.offer-card h3 { color: var(--white); font-size: 1.2rem; margin-bottom: 14px; }
+.offer-card > p { font-size: 0.86rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7; }
+.offer-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.offer-list li {
+  display: flex; gap: 9px; align-items: flex-start;
+  font-size: 0.85rem; color: var(--text); line-height: 1.6;
+}
+.offer-list li::before { content: '✓'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+/* FINAL CTA */
+#final-cta { background: var(--dark); }
+.final-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 44px; }
+.path-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+}
+.path-label {
+  display: inline-block;
+  background: rgba(0,201,177,0.1);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 11px;
+  border-radius: 11px;
+  margin-bottom: 12px;
+}
+.path-card h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  font-size: 0.97rem;
+  margin-bottom: 10px;
+}
+.path-card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 18px; line-height: 1.7; }
+.cal-section { margin-bottom: 32px; }
+.cal-section h3 { color: var(--white); margin-bottom: 22px; text-align: center; font-size: 1.6rem; }
+.cal-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+}
+
+/* FOOTER */
+footer {
+  background: #050810;
+  border-top: 1px solid var(--border);
+  padding: 36px 48px;
+  text-align: center;
+}
+.footer-inner { max-width: 900px; margin: 0 auto; }
+footer p { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; line-height: 1.7; }
+footer .teal { color: var(--accent); }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  #side-nav { display: none; }
+  main { margin-left: 0; }
+  .section-inner { padding: 60px 28px; }
+  .email-cards, .about-grid, .final-paths, .cred-grid { grid-template-columns: 1fr; }
+  .c-cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .section-inner { padding: 48px 20px; }
+  .comp-grid, .inside-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .hero-btns { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- SIDE NAV -->
+<nav id="side-nav" aria-label="Page navigation">
+  <div class="nav-logo">Cronofy Special Package<br>for Octave Auger</div>
+  <a href="#hero" class="nav-dot active">Introduction</a>
+  <a href="#video" class="nav-dot">Video</a>
+  <a href="#warning" class="nav-dot">Warning Signal</a>
+  <a href="#helps" class="nav-dot">How This Helps</a>
+  <a href="#inside" class="nav-dot">What's Inside</a>
+  <a href="#why-now" class="nav-dot">Why Cronofy Now</a>
+  <a href="#credibility" class="nav-dot">Credibility</a>
+  <a href="#how-we-work" class="nav-dot">How We Work</a>
+  <a href="#mid-cta" class="nav-dot">Book a Call</a>
+  <a href="#leak-map" class="nav-dot">AAA Leak Map</a>
+  <a href="#funnel-economics" class="nav-dot">Funnel Economics</a>
+  <a href="#money-levers" class="nav-dot">Money Levers</a>
+  <a href="#funnel-cascade" class="nav-dot">Funnel Cascade</a>
+  <a href="#competitive-map" class="nav-dot">Competitive Map</a>
+  <a href="#sprint-plan" class="nav-dot">90-Day Sprint</a>
+  <a href="#email-previews" class="nav-dot">Email Sequences</a>
+  <a href="#key-results" class="nav-dot">Key Results</a>
+  <a href="#case-study" class="nav-dot">Case Study</a>
+  <a href="#growth-loops" class="nav-dot">Growth Loops</a>
+  <a href="#faqs" class="nav-dot">FAQs</a>
+  <a href="#about" class="nav-dot">About &amp; Offer</a>
+  <a href="#final-cta" class="nav-dot">Book Now</a>
+  <a href="#footer" class="nav-dot">Footer</a>
+</nav>
+
+<main>
+
+<!-- 1. HERO -->
+<section id="hero">
+  <div class="section-inner">
+    <div class="hero-tag">Personalised for Octave Auger · Head of Marketing · Cronofy</div>
+    <h1>Octave Auger's<br><span class="teal">Special Package</span> — Cronofy</h1>
+    <p class="hero-sub">A research-backed acquisition diagnosis built specifically for Cronofy's £15M BGF moment — with the Leak Map, competitive gap analysis, and 90-day sprint plan your incoming Demand Generation Manager can inherit on day one.</p>
+    <div class="hero-goal">
+      <strong>Wild Goal:</strong> £1.2M in new Annual Recurring Revenue by capturing the developer intent Nylas is converting right now — in 12 months.
+    </div>
+    <div class="hero-btns">
+      <a href="https://cal.com/jean-m-8f4kbr/15min" class="btn btn-primary" target="_blank" rel="noopener">Book 20 Minutes →</a>
+      <a href="#leak-map" class="btn btn-outline">View the Leak Map</a>
+    </div>
+    <p class="credit">Strategy &amp; GTM research by Jean Mundabi Fala</p>
+  </div>
+</section>
+
+<!-- 2. VIDEO -->
+<section id="video">
+  <div class="section-inner">
+    <p class="section-label">Video Introduction</p>
+    <h2 class="section-title">A personal walkthrough from Jean</h2>
+    <div class="section-divider"></div>
+    <div class="video-wrap">
+      <iframe src="VIDEO_URL_GOES_HERE" allowfullscreen title="Jean's personalised video for Octave Auger at Cronofy"></iframe>
+      <div class="video-placeholder" id="video-placeholder">
+        <div class="play-ring">▶</div>
+        <p>Jean's personalised 3 to 4 minute video — recorded specifically for Octave Auger and Cronofy</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. WARNING BANNER -->
+<section id="warning">
+  <div class="section-inner">
+    <div class="warning-inner">
+      <div class="warning-icon">⚠️</div>
+      <div class="warning-text">
+        <div class="warning-title">ACTIVE COMPETITIVE THREAT — NYLAS IS HARVESTING DEVELOPER INTENT YOU BUILT</div>
+        <p>Search "scheduling API" or "Nylas alternative" right now. Nylas has paid ads in the top slot. Cronofy appears organically below it.</p>
+        <p>Developers who are actively evaluating a scheduling Application Programming Interface pick one provider and rarely switch. The developer who lands on Nylas today is not evaluating Cronofy next month. They are building their integration, pulling their team in, and becoming a Nylas account.</p>
+        <p>Every month without paid acquisition, Nylas locks in another cohort of developers who will never evaluate Cronofy. Cronofy built the organic intent. Nylas is harvesting the conversions.</p>
+        <div class="warning-stat">🔴 Nylas npm: 91,474 weekly downloads vs Cronofy: 3,082 — a 30 to 1 developer mindshare gap growing every week</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. HOW THIS HELPS -->
+<section id="helps">
+  <div class="section-inner">
+    <p class="section-label">What This Package Gives You</p>
+    <h2 class="section-title">Four things most demand generation agencies never will</h2>
+    <div class="section-divider"></div>
+    <div class="helps-card">
+      <ul class="helps-list">
+        <li><span class="arrow">→</span><span><strong>A verified Leak Map</strong> — showing every stage of Cronofy's acquisition funnel with what is working, what is partial, and what is absent. Built from live research, not assumptions.</span></li>
+        <li><span class="arrow">→</span><span><strong>A keyword gap map</strong> — the exact high-intent terms Nylas is capturing that Cronofy ranks for organically but has no paid layer on. With estimated cost per click and a starting budget.</span></li>
+        <li><span class="arrow">→</span><span><strong>A named Account Based Marketing target list</strong> — Application Tracking System vendors and healthcare platforms that match Cronofy's best enterprise customers (Indeed, Teamtailor, Docplanner) but have no active Cronofy outreach running against them.</span></li>
+        <li><span class="arrow">→</span><span><strong>A 90-day sprint plan</strong> — structured for a 6-person marketing team operating without a dedicated Demand Generation Manager for the first 30 days.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 5. WHAT'S INSIDE -->
+<section id="inside">
+  <div class="section-inner">
+    <p class="section-label">Package Contents</p>
+    <h2 class="section-title">What's inside this package</h2>
+    <div class="section-divider"></div>
+    <div class="inside-grid">
+      <div class="inside-card">
+        <div class="inside-icon">🔬</div>
+        <h4>AAA Acquisition Diagnostic</h4>
+        <p>Full Attraction, Alignment, Activation audit mapped across every funnel layer.</p>
+      </div>
+      <div class="inside-card">
+        <div class="inside-icon">🗺️</div>
+        <h4>The Leak Map</h4>
+        <p>ASCII-detailed funnel map showing exactly where revenue is escaping and why.</p>
+      </div>
+      <div class="inside-card">
+        <div class="inside-icon">📊</div>
+        <h4>Funnel Economics Model</h4>
+        <p>Revenue by tier, npm download gap costs, and paid acquisition payback calculations.</p>
+      </div>
+      <div class="inside-card">
+        <div class="inside-icon">⚡</div>
+        <h4>Money Levers Priority Matrix</h4>
+        <p>Ranked by revenue impact against time to implement — built for a 6-person team.</p>
+      </div>
+      <div class="inside-card">
+        <div class="inside-icon">📅</div>
+        <h4>The 90-Day Sprint Plan</h4>
+        <p>Week-by-week execution roadmap your incoming Demand Generation Manager inherits on day one.</p>
+      </div>
+      <div class="inside-card">
+        <div class="inside-icon">✉️</div>
+        <h4>Two Email Sequences</h4>
+        <p>Predicted Success Score scored and graded — 87 and 84 out of 100. Ready to send.</p>
+      </div>
+      <div class="inside-card">
+        <div class="inside-icon">🔄</div>
+        <h4>Growth Feedback Loops</h4>
+        <p>Three compounding loops specific to Cronofy's acquisition model — not a generic framework.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. WHY NOW -->
+<section id="why-now">
+  <div class="section-inner">
+    <p class="section-label">Why Cronofy Now</p>
+    <h2 class="section-title">Five signals that make this the most important window in Cronofy's history</h2>
+    <div class="section-divider"></div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-num">£15M</div>
+        <h4>BGF Investment, May 2025</h4>
+        <p>Adam Bird said the capital is for "expanding into new use cases" and "accelerating US growth." The budget for demand generation is there. The execution system is not yet.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">New</div>
+        <h4>Head of Marketing in Seat</h4>
+        <p>Octave joined post-raise with a mandate to build the demand generation function that has never existed in the business.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">Live</div>
+        <h4>Demand Gen Manager Role Open</h4>
+        <p>Whoever is hired inherits whatever is in place on day one. The 30-day window before they start is the best time to build a working framework, not a blank page.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-num">Now</div>
+        <h4>Nylas Running Paid to Attack Cronofy</h4>
+        <p>Nylas has a "Cronofy alternative" page live and running paid traffic to it. Cronofy has the counter page. No paid distribution behind it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. CREDIBILITY -->
+<section id="credibility">
+  <div class="section-inner">
+    <p class="section-label">Credibility</p>
+    <h2 class="section-title">Three verified numbers</h2>
+    <div class="section-divider"></div>
+    <div class="cred-grid">
+      <div class="cred-box">
+        <div class="cred-stat">£2.6M</div>
+        <p>in Google Ads spend managed across financial services and retail clients. Real budget. Real campaigns. Real attribution.</p>
+      </div>
+      <div class="cred-box">
+        <div class="cred-stat">16×</div>
+        <p>paid acquisition scale in 7 months — £50K to £800K monthly spend for a Direct to Consumer brand. The mechanism is documented and transferable.</p>
+      </div>
+      <div class="cred-box">
+        <div class="cred-stat">14</div>
+        <p>B2B outreach packages built in the last 90 days. Cronofy is not a template — it is research-backed and specific to this business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. HOW WE WORK -->
+<section id="how-we-work">
+  <div class="section-inner">
+    <p class="section-label">The Process</p>
+    <h2 class="section-title">Seven steps from this document to a functioning demand generation system</h2>
+    <div class="section-divider"></div>
+    <ol class="steps-list">
+      <li class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <h4>We align on the brief</h4>
+          <p>One 20-minute call. Jean walks you through the Leak Map. You tell him where the priorities don't match what you know internally. The brief gets sharper.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <h4>Jean builds the paid acquisition setup</h4>
+          <p>Google Ads campaigns for the 6 high-intent keywords. Dedicated landing pages matched to each keyword cluster. No Performance Max. Exact match and phrase match so you see which terms convert before you scale.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <h4>Jean activates Fibbler</h4>
+          <p>Fibbler is already in your stack but the activation layer doesn't exist. Jean defines the intent thresholds and builds the 3-touch HubSpot sequences. Triggered outbound running within 2 weeks.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">4</div>
+        <div>
+          <h4>Jean builds the Account Based Marketing target list</h4>
+          <p>50 Application Tracking System vendors and healthcare platforms matched to your best customer profiles (Teamtailor tier, Docplanner tier). Two contacts per account. Verified emails and LinkedIn profiles.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">5</div>
+        <div>
+          <h4>Jean launches the G2 review generation campaign</h4>
+          <p>20 personalised outreach to contacts at Indeed, Teamtailor, Docplanner, Wise, UKG. G2 category movement from "Small Business" to Enterprise-qualified within 60 to 90 days.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">6</div>
+        <div>
+          <h4>Jean hands the system to your incoming Demand Generation Manager</h4>
+          <p>Performance data from paid acquisition. Running Fibbler workflows. G2 campaign in progress. The new hire inherits a working system, not a blank page.</p>
+        </div>
+      </li>
+      <li class="step-item">
+        <div class="step-num">7</div>
+        <div>
+          <h4>Jean stays for measurement</h4>
+          <p>30-day check on paid performance, Account Based Marketing pipeline status, and G2 category movement. Adjustments made based on what the data shows, not what was planned 8 weeks ago.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 9. MID CTA -->
+<section id="mid-cta">
+  <div class="section-inner">
+    <div class="mid-cta-inner">
+      <h2>If the Leak Map resonates, let's walk through it together</h2>
+      <p>No deck. No proposal. Jean brings the data. You bring the questions.</p>
+      <div class="mid-btns">
+        <a href="https://cal.com/jean-m-8f4kbr/15min" class="btn btn-primary" target="_blank" rel="noopener">Book a 20-Minute Call</a>
+        <a href="mailto:jean@mdbgrowthcapital.com" class="btn btn-outline">Reply to Jean's Email</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. AAA LEAK MAP -->
+<section id="leak-map">
+  <div class="section-inner">
+    <p class="section-label">AAA Diagnostic</p>
+    <h2 class="section-title">The Cronofy Acquisition Leak Map</h2>
+    <div class="section-divider"></div>
+    <p class="section-lead">Every layer of Cronofy's acquisition funnel — what is working, what is partial, and what is absent. Built from live research, April 2026.</p>
+    <div class="leak-wrap">
+<pre>CRONOFY ACQUISITION FUNNEL — CURRENT STATE
+April 2026
+
+===========================================================================
+LAYER 1: ATTRACTION
+===========================================================================
+
+TRAFFIC SOURCES (CONFIRMED)
+─────────────────────────────────────────────────────────────────────────
+
+  ORGANIC SEARCH          [<span class="s-amber">ACTIVE — PARTIAL</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Blog: 2-3 posts/month. Ranking for some long-tail terms.      │
+  │  "Best calendar APIs 2025" article exists (good intent match)  │
+  │  "Nylas alternative" page exists (good intent match)           │
+  │  Ranking for "scheduling API"? NOT CONFIRMED. No paid push.    │
+  │  Developer docs at docs.cronofy.com indexed — helps organic.   │
+  │  STATUS: <span class="s-amber">⚠️  PARTIAL — captures existing demand, not creating it</span>│
+  └────────────────────────────────────────────────────────────────┘
+
+  PAID SEARCH             [<span class="s-red">ABSENT</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Google Ads: NONE FOUND                                        │
+  │  LinkedIn Ads: NONE FOUND                                      │
+  │  Target keywords uncaptured:                                   │
+  │    - "scheduling API"             ← Nylas running ads here     │
+  │    - "calendar API for SaaS"      ← uncaptured                 │
+  │    - "interview scheduling API"   ← uncaptured                 │
+  │    - "Nylas alternative"          ← Nylas running ads here     │
+  │    - "calendar integration SaaS"  ← uncaptured                 │
+  │    - "meeting infrastructure API" ← uncaptured                 │
+  │  STATUS: <span class="s-red">🔴 ABSENT — budget approved post-BGF but not deployed</span> │
+  └────────────────────────────────────────────────────────────────┘
+
+  INTEGRATION MARKETPLACES [<span class="s-green">ACTIVE — PASSIVE</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Listed in: Greenhouse, SmartRecruiters, Teamtailor,          │
+  │  Lever, Zendesk, HubSpot integrations directories             │
+  │  Passive discovery only — no active outbound within channels  │
+  │  STATUS: <span class="s-green">✅ ACTIVE</span> but purely passive, no push within channel  │
+  └────────────────────────────────────────────────────────────────┘
+
+  G2 / REVIEW SITES       [<span class="s-amber">ACTIVE — UNDERDEVELOPED</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  G2 rating: 4.8 stars (website claim). Category: High         │
+  │  Performer in Calendar — Small Business. NOT a G2 Leader.     │
+  │  Nylas: visible in G2 Enterprise category comparisons.        │
+  │  Cronofy reviews count: low (exact number gated by G2)        │
+  │  Comparison pages on G2 exist but lack Cronofy-owned review   │
+  │  generation campaign to drive volume vs Nylas                  │
+  │  STATUS: <span class="s-amber">⚠️  PRESENT but not weaponised</span>                        │
+  └────────────────────────────────────────────────────────────────┘
+
+  DEVELOPER COMMUNITIES   [<span class="s-red">ABSENT</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Product Hunt: Last launch July 2020 (6 years ago)            │
+  │  Hacker News: No confirmed Show HN posts found                │
+  │  Dev.to: Not found                                            │
+  │  GitHub Discussions: Not found                                │
+  │  Discord: Not found                                           │
+  │  Developer newsletter: Not found                              │
+  │  npm weekly downloads: 3,082 vs Nylas 91,474 (30x gap)        │
+  │  GitHub stars: 50 vs Nylas 178                                │
+  │  STATUS: <span class="s-red">🔴 ABSENT — no developer community infrastructure</span>     │
+  └────────────────────────────────────────────────────────────────┘
+
+  EVENTS / CONFERENCES    [<span class="s-amber">SPORADIC</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  SmartRecruiters Hiring Success EMEA 2024: attended           │
+  │  No confirmed developer conference presence (API World,       │
+  │  Stripe Sessions, GitHub Universe, etc.)                      │
+  │  STATUS: <span class="s-amber">⚠️  SPORADIC — recruitment events only, no developer</span>  │
+  │  conference strategy, no ABM event approach                    │
+  └────────────────────────────────────────────────────────────────┘
+
+  ACCOUNT-BASED MARKETING [<span class="s-red">ABSENT</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Target account list: NOT FOUND                               │
+  │  Outbound sequences: NOT FOUND                                │
+  │  Fibbler intent data: IN SEAT but no activation layer visible │
+  │  HubSpot: IN SEAT but no documented ABM workflow              │
+  │  STATUS: <span class="s-red">🔴 ABSENT — tools exist, motion does not</span>             │
+  └────────────────────────────────────────────────────────────────┘
+
+===========================================================================
+LAYER 2: ALIGNMENT
+===========================================================================
+
+HOMEPAGE                  [<span class="s-amber">MIXED</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Headline: "Meeting and scheduling automation for teams and    │
+  │  product builders" — dual audience, low specificity           │
+  │  Subheadline: stronger — AI agents, schedule/reschedule,      │
+  │  transcribe, summarise — but jargon-heavy for first touch     │
+  │  CTAs: "Embed into my product" / "Automate my process" — good │
+  │  Social proof: Wise, Indeed, iCIMS, Squarespace, UKG — strong │
+  │  Stats: 180,000+ companies, 1B+ events — strong               │
+  │  Compliance badges: ISO 27001, SOC 2, GDPR, HIPAA — strong    │
+  │  STATUS: <span class="s-amber">⚠️  MIXED — social proof excellent, headline weak</span>     │
+  └────────────────────────────────────────────────────────────────┘
+
+API PRICING PAGE          [<span class="s-green">GOOD — MINOR GAPS</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Three clear tiers: Emerging ($819/mo), Growth ($2,399/mo),   │
+  │  Strategic (custom)                                           │
+  │  Usage limits clear: synced accounts, smart invites,          │
+  │  application calendars, embedded scheduler seats              │
+  │  "Try for free" CTA on Emerging — good                        │
+  │  "Book a demo" on Growth — appropriate friction               │
+  │  Sandbox: mentioned on developer page, NOT on pricing page    │
+  │  STATUS: <span class="s-green">✅ GOOD — upgrade path clear, minor sandbox gap</span>      │
+  └────────────────────────────────────────────────────────────────┘
+
+DEVELOPER PAGE            [<span class="s-green">GOOD</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Sandbox mentioned explicitly ("build a proof of concept")    │
+  │  Five capabilities showcased (Calendar, Availability, UI      │
+  │  Components, Meeting Agents, Embedded Scheduler)              │
+  │  Dual CTAs: "Get started" + "Talk to a human" — appropriate   │
+  │  Customer quote (Heal.me CTO) — developer-credible            │
+  │  STATUS: <span class="s-green">✅ GOOD — strong for warm traffic, weak for cold</span>     │
+  └────────────────────────────────────────────────────────────────┘
+
+SOLUTIONS PAGES           [<span class="s-amber">MIXED</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  HR Tech page: excellent — specific, ATS-named logos, dual    │
+  │  CTA, recruiter language, ATS integration list                │
+  │  Healthcare page: exists (/api-for-healthcare) — not audited  │
+  │  Use cases hub: weak — no CTAs on individual cards, generic   │
+  │  1-2 sentence descriptions, no vertical-specific proof        │
+  │  STATUS: <span class="s-amber">⚠️  MIXED — vertical pages strong, hub page weak</span>     │
+  └────────────────────────────────────────────────────────────────┘
+
+NYLAS ALTERNATIVE PAGE    [<span class="s-amber">GOOD — DISTRIBUTION MISSING</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Exists at cronofy.com/nylas-alternative                      │
+  │  Covers: API stability, cross-domain queries, uptime SLA,     │
+  │  compliance, support on every tier                            │
+  │  Dual CTAs: self-serve and demo — good                        │
+  │  Weakness: no paid traffic driving to this page               │
+  │  Nylas has own comparison page attacking Cronofy AND running  │
+  │  paid to drive traffic to it. Cronofy has the page, not the   │
+  │  distribution.                                                 │
+  │  STATUS: <span class="s-amber">⚠️  PAGE EXISTS — no paid distribution behind it</span>     │
+  └────────────────────────────────────────────────────────────────┘
+
+===========================================================================
+LAYER 3: ACTIVATION
+===========================================================================
+
+DEVELOPER SIGNUP          [<span class="s-amber">EXISTS — FRICTION PRESENT</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  Free developer account at app.cronofy.com/sign_up/developer  │
+  │  14-day free trial on paid plans                              │
+  │  Sandbox: exists — not prominently advertised                 │
+  │  Steps to first API call: 3-4 steps — acceptable              │
+  │  Getting started docs: 3 separate paths, no single            │
+  │  recommended "Hello World" flow                               │
+  │  Production verification: buried in FAQs                      │
+  │  STATUS: <span class="s-amber">⚠️  FUNCTIONAL but rough edges that lose developers</span>  │
+  └────────────────────────────────────────────────────────────────┘
+
+TRIAL TO PAID CONVERSION  [<span class="s-red">UNCLEAR</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  14-day free trial: in place                                  │
+  │  Trial-to-paid conversion: no public data, no visible         │
+  │  in-app upgrade prompts or email nurture sequence documented  │
+  │  Intent data (Fibbler): in seat but activation unclear        │
+  │  STATUS: <span class="s-red">🔴 UNCLEAR — no visible conversion infrastructure</span>    │
+  └────────────────────────────────────────────────────────────────┘
+
+ENTERPRISE DEMO REQUEST   [<span class="s-green">FUNCTIONAL</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  "Talk to a human" / "Book a demo" CTAs across key pages      │
+  │  Demo booking: likely via HubSpot or Calendly (unconfirmed)   │
+  │  STATUS: <span class="s-green">✅ FUNCTIONAL</span>                                        │
+  └────────────────────────────────────────────────────────────────┘
+
+RETARGETING               [<span class="s-red">ABSENT</span>]
+  ┌────────────────────────────────────────────────────────────────┐
+  │  No LinkedIn retargeting ads found                            │
+  │  No Google Display retargeting found                          │
+  │  No account-level retargeting visible                         │
+  │  180,000 companies in the system — none being retargeted      │
+  │  STATUS: <span class="s-red">🔴 ABSENT</span>                                            │
+  └────────────────────────────────────────────────────────────────┘
+
+===========================================================================
+SUMMARY LEAK MAP
+===========================================================================
+
+AWARENESS  ──────────► CONSIDERATION  ──────────► TRIAL ──────────► PAID
+
+[Organic]      <span class="s-green">✅</span>        [Homepage]      <span class="s-amber">⚠️</span>        [Free Account] <span class="s-amber">⚠️</span>  [Conversion] <span class="s-red">🔴</span>
+[Paid]         <span class="s-red">🔴</span>        [Pricing]       <span class="s-green">✅</span>        [Onboarding]   <span class="s-amber">⚠️</span>  [Retargeting] <span class="s-red">🔴</span>
+[Marketplace]  <span class="s-amber">⚠️</span>        [Solutions]     <span class="s-amber">⚠️</span>        [Demo]         <span class="s-green">✅</span>  [ABM Follow]  <span class="s-red">🔴</span>
+[Community]    <span class="s-red">🔴</span>        [Nylas Alt]     <span class="s-amber">⚠️</span>        [Trial Email]  <span class="s-red">🔴</span>
+[Events]       <span class="s-amber">⚠️</span>        [Comparison]    <span class="s-green">✅</span>        [Intent Act.]  <span class="s-red">🔴</span>
+[ABM]          <span class="s-red">🔴</span>
+
+<span class="s-green">✅ WORKING</span>   <span class="s-amber">⚠️ PARTIAL / UNTAPPED POTENTIAL</span>   <span class="s-red">🔴 ABSENT / BROKEN</span>
+
+BIGGEST ACTIVE LEAKS (revenue impact order):
+  <span class="s-red">🔴 LEAK 1: No paid acquisition — Nylas capturing demand Cronofy built</span>
+  <span class="s-red">🔴 LEAK 2: No ABM motion — enterprise tier sitting untouched</span>
+  <span class="s-red">🔴 LEAK 3: No trial conversion infrastructure — 14-day clock with no nurture</span>
+  <span class="s-red">🔴 LEAK 4: No developer community — 30x npm gap vs Nylas growing monthly</span>
+  <span class="s-amber">⚠️ LEAK 5: Homepage dual-audience headline diluting first-touch clarity</span>
+
+===========================================================================</pre>
+    </div>
+  </div>
+</section>
+
+<!-- 11. FUNNEL ECONOMICS -->
+<section id="funnel-economics">
+  <div class="section-inner">
+    <p class="section-label">Funnel Economics</p>
+    <h2 class="section-title">What the gaps cost in real revenue</h2>
+    <div class="section-divider"></div>
+    <p class="section-lead">Revenue and conversion data are not publicly disclosed by Cronofy. Figures below are working estimates based on verified pricing, headcount, BGF investment scale, and benchmarks for comparable Application Programming Interface-first companies.</p>
+
+    <h3 style="color:var(--white);font-size:1.2rem;margin-bottom:16px;">Revenue by Tier</h3>
+    <div class="table-wrap" style="margin-bottom:32px;">
+      <table class="dark-table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Price Per Month</th>
+            <th>Typical Customer Profile</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>API Emerging</td><td>$819</td><td>Early-stage software company, proof of concept, under 1,000 synced accounts</td></tr>
+          <tr><td>API Growth</td><td>$2,399</td><td>Growing software company, 1,000 to 6,000 synced accounts</td></tr>
+          <tr><td>API Strategic</td><td>$10,000 to $30,000 (est.)</td><td>Enterprise Application Tracking System, healthcare platform, multi-geography</td></tr>
+          <tr><td>Scheduler Business</td><td>$799</td><td>Mid-market internal teams (up to 50 seats)</td></tr>
+          <tr><td>Scheduler Enterprise</td><td>$2,999</td><td>Large enterprise internal scheduling (up to 200 seats)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--white);font-size:1.2rem;margin-bottom:16px;">The Developer npm Gap: What It Costs</h3>
+    <div class="table-wrap" style="margin-bottom:32px;">
+      <table class="dark-table">
+        <thead>
+          <tr><th>Metric</th><th>Nylas</th><th>Cronofy</th><th>Gap</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Weekly npm downloads</td><td>91,474</td><td>3,082</td><td>30 to 1</td></tr>
+          <tr><td>Missed developer evaluations per week (est.)</td><td>—</td><td>88,392</td><td>—</td></tr>
+          <tr><td>At 2% trial conversion</td><td>—</td><td>1,768 missed trials/week</td><td>—</td></tr>
+          <tr><td>At $1,500 first-year average contract value</td><td>—</td><td style="color:#ef4444;font-weight:600;">$2.6M+ annually lost to Nylas</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--white);font-size:1.2rem;margin-bottom:16px;">What Paid Acquisition Costs to Fix</h3>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:24px;">
+      <p style="font-size:0.9rem;color:var(--text);line-height:1.8;margin-bottom:10px;">Starting budget: $4,000 to $6,000 per month. At 5% trial conversion from paid clicks and a $1,500 average first-year contract value, a single month of paid budget pays back in 4 to 6 converted trials.</p>
+      <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.8;">The Emerging plan ($819 per month) has a payback period under 2 months if one developer evaluation converts to a paying account. The numbers support starting now, not after the Demand Generation Manager is hired and onboarded.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 12. MONEY LEVERS -->
+<section id="money-levers">
+  <div class="section-inner">
+    <p class="section-label">Money Levers</p>
+    <h2 class="section-title">Priority Matrix — ranked by revenue impact</h2>
+    <div class="section-divider"></div>
+    <p class="section-lead">Built for a 6-person marketing team without a dedicated Demand Generation Manager in seat.</p>
+    <div class="table-wrap" style="margin-bottom:32px;">
+      <table class="dark-table">
+        <thead>
+          <tr><th>Priority</th><th>Lever</th><th>Revenue Impact</th><th>Time to Implement</th><th>Who</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge b-red">1</span></td>
+            <td>Turn on paid acquisition for high-intent keywords</td>
+            <td>Very High</td>
+            <td>2 to 3 weeks</td>
+            <td>Octave or external media buyer</td>
+          </tr>
+          <tr>
+            <td><span class="badge b-red">2</span></td>
+            <td>Build and launch enterprise Account Based Marketing target list (50 accounts)</td>
+            <td>Very High (long cycle)</td>
+            <td>3 to 4 weeks to list, 8 to 12 weeks to first results</td>
+            <td>MDB Growth Capital plus Octave</td>
+          </tr>
+          <tr>
+            <td><span class="badge b-amber">3</span></td>
+            <td>Activate Fibbler intent data with outbound sequence in HubSpot</td>
+            <td>High, near-term</td>
+            <td>1 to 2 weeks</td>
+            <td>Octave with HubSpot</td>
+          </tr>
+          <tr>
+            <td><span class="badge b-amber">4</span></td>
+            <td>Fix developer onboarding to reduce trial abandonment</td>
+            <td>High, compounds over time</td>
+            <td>3 to 4 weeks</td>
+            <td>Jack Fryer (Developer Marketing Lead) plus engineering</td>
+          </tr>
+          <tr>
+            <td><span class="badge b-blue">5</span></td>
+            <td>Run a G2 review generation campaign targeting enterprise customers</td>
+            <td>Medium, long-term positioning</td>
+            <td>2 to 3 weeks</td>
+            <td>Octave plus Customer Success</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--white);font-size:1.1rem;margin-bottom:14px;">Starting Keyword Set for Lever 1</h3>
+    <div class="table-wrap">
+      <table class="dark-table">
+        <thead>
+          <tr><th>Priority</th><th>Keyword</th><th>Monthly Volume (est.)</th><th>Suggested Bid</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge b-red">1</span></td><td>scheduling API</td><td>1,000 to 5,000</td><td>$8 to $15</td></tr>
+          <tr><td><span class="badge b-red">2</span></td><td>Nylas alternative</td><td>200 to 500</td><td>$12 to $20</td></tr>
+          <tr><td><span class="badge b-amber">3</span></td><td>calendar API for software companies</td><td>500 to 2,000</td><td>$6 to $12</td></tr>
+          <tr><td><span class="badge b-amber">4</span></td><td>interview scheduling API</td><td>200 to 800</td><td>$8 to $15</td></tr>
+          <tr><td><span class="badge b-blue">5</span></td><td>HIPAA scheduling API</td><td>100 to 300</td><td>$10 to $18</td></tr>
+          <tr><td><span class="badge b-blue">6</span></td><td>calendar integration for developers</td><td>300 to 1,000</td><td>$5 to $10</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 13. FUNNEL CASCADE -->
+<section id="funnel-cascade">
+  <div class="section-inner">
+    <p class="section-label">Funnel Cascade</p>
+    <h2 class="section-title">Four layers. What happens today. What gets added.</h2>
+    <div class="section-divider"></div>
+    <div class="cascade-stack">
+
+      <div class="c-layer c-top">
+        <h4>Top — Developer Discovery and Enterprise Awareness</h4>
+        <div class="c-cols">
+          <div class="c-col">
+            <h5>What Happens Today</h5>
+            <p>Developers find Cronofy through organic search, integration marketplace listings inside Greenhouse and SmartRecruiters, G2, and word of mouth from existing customers like Teamtailor and Docplanner.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Is Missing</h5>
+            <p>Paid search on scheduling API keywords. Developer community presence — no Discord, no Dev.to, no npm presence beyond 3,082 weekly downloads. Account Based Marketing outreach to 30-plus enterprise Application Tracking System vendors matching the Teamtailor and Indeed profile.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Gets Added</h5>
+            <p>Three Google Ads campaigns (scheduling API terms, Nylas alternative comparison terms, vertical-specific terms for health technology and recruitment technology). Developer community activation on Dev.to. Account Based Marketing outreach sequences to Tier 1 Application Tracking System vendors and Tier 2 healthcare platforms.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-arrow">↓</div>
+
+      <div class="c-layer c-mid">
+        <h4>Middle — Evaluation and Alignment</h4>
+        <div class="c-cols">
+          <div class="c-col">
+            <h5>What Happens Today</h5>
+            <p>Developers and product buyers land on the homepage, self-select into the correct path, and find the developer page, API pricing page, or solutions pages. The HR technology page is strong. The use cases hub is weak. The Nylas alternative page is well-built but has no paid distribution.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Is Missing</h5>
+            <p>Dedicated paid landing pages for each keyword cluster (not the homepage). A build-versus-buy calculator for the economic buyer. A use cases hub with real calls to action. LinkedIn retargeting for accounts that visited the API pricing page and did not convert.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Gets Added</h5>
+            <p>Keyword-specific landing pages routing paid traffic to the developer page for broad API terms, the Nylas alternative page for competitor terms, and the HR technology page for interview scheduling terms. LinkedIn retargeting. Build-versus-buy calculator as an ungated resource.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-arrow">↓</div>
+
+      <div class="c-layer c-bot">
+        <h4>Bottom — Trial and Conversion</h4>
+        <div class="c-cols">
+          <div class="c-col">
+            <h5>What Happens Today</h5>
+            <p>Developers sign up for a free developer account or 14-day trial. Three friction points exist in onboarding. Trial-to-paid conversion has no visible nurture sequence.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Is Missing</h5>
+            <p>A single recommended onboarding path. A "5 steps to your first live calendar sync" progress checklist. Sandbox promotion on the pricing page. A post-signup email sequence. Fibbler intent triggers connected to HubSpot outbound sequences.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Gets Added</h5>
+            <p>Consolidated developer onboarding — one recommended path, alternative paths labelled clearly. Sandbox advertised on API pricing page. Three HubSpot sequences triggered by Fibbler intent signals. Post-signup developer email sequence with tutorials during the 14-day trial window.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-arrow">↓</div>
+
+      <div class="c-layer c-sale">
+        <h4>Sale — Enterprise Expansion and Champion Development</h4>
+        <div class="c-cols">
+          <div class="c-col">
+            <h5>What Happens Today</h5>
+            <p>Developer adoption sometimes surfaces to an enterprise contract conversation. The journey from free developer account to a Strategic-tier contract ($10,000 to $30,000 per month) relies on inbound interest rather than a structured sales signal.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Is Missing</h5>
+            <p>A trial-to-Strategic pipeline motion with defined usage thresholds that trigger sales outreach. A champion programme for developers at enterprise accounts. Account Based Marketing measurement reporting for the board.</p>
+          </div>
+          <div class="c-col">
+            <h5>What Gets Added</h5>
+            <p>Fibbler threshold definition for enterprise intent signals (3-plus pricing page visits in 14 days triggers a sales alert). Account Based Marketing 90-day measurement report for Adam Bird and the BGF board. Developer champion identification inside Indeed, iCIMS, Teamtailor, and Docplanner.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 14. COMPETITIVE MAP -->
+<section id="competitive-map">
+  <div class="section-inner">
+    <p class="section-label">Competitive Landscape</p>
+    <h2 class="section-title">Three competitors. Where they win. Where Cronofy wins.</h2>
+    <div class="section-divider"></div>
+    <div class="comp-grid">
+
+      <div class="comp-card">
+        <h4>Nylas</h4>
+        <p>Unified communications API covering calendar, email, contacts, and scheduling. $175 million raised. 150,000-plus developers. Full demand generation function with paid acquisition on every high-intent scheduling keyword.</p>
+        <div class="comp-label weak">Where They Are Weak</div>
+        <p>Forced a breaking version 3 migration in 2023 to 2024 — developers had to rebuild integrations. Cannot execute cross-domain availability queries. Broader scope means scheduling is not their specialisation.</p>
+        <div class="comp-label win">Where Cronofy Wins</div>
+        <p>API stability — one version, no breaking changes in over a decade. Cross-domain availability queries — a technical differentiator. Compliance-first architecture (ISO 27001, 27701, SOC 2, GDPR, HIPAA). Support included on every tier including the entry plan.</p>
+      </div>
+
+      <div class="comp-card">
+        <h4>Cal.com (open source)</h4>
+        <p>Open-source scheduling platform and API. Self-hostable. $25 million Series A in 2023. Strong developer community and brand among privacy-conscious developers.</p>
+        <div class="comp-label weak">Where They Are Weak</div>
+        <p>Requires end-user account creation — not invisible embedded scheduling infrastructure. Self-hosting demands engineering overhead. Not enterprise-grade compliance by default. Better for startups, not enterprise software companies embedding scheduling inside a product.</p>
+        <div class="comp-label win">Where Cronofy Wins</div>
+        <p>Invisible infrastructure — end users never see Cronofy. True white-label embedded scheduling components. Enterprise compliance (GDPR, HIPAA, SOC 2) without the client needing to maintain it. 99.99% uptime guarantee with sub-second latency via cached availability data.</p>
+      </div>
+
+      <div class="comp-card">
+        <h4>Microsoft Graph API</h4>
+        <p>Free unified endpoint for the Microsoft 365 ecosystem — calendar, email, contacts, and files. Enterprise companies default to it because it is already purchased.</p>
+        <div class="comp-label weak">Where They Are Weak</div>
+        <p>Overwhelming scope for calendar-only use cases. Frequent breaking changes as the API evolves. Poor developer experience versus purpose-built scheduling APIs. Google-only and Apple Calendar are separate integrations that must be built and maintained in addition.</p>
+        <div class="comp-label win">Where Cronofy Wins</div>
+        <p>Multi-provider support in one API call (Google Calendar, Microsoft Outlook, Office 365, Apple Calendar, Exchange). Purpose-built for scheduling — not a 400-endpoint general API. No breaking changes. Embedded scheduling UI components that Microsoft Graph does not provide.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 15. 90-DAY SPRINT PLAN -->
+<section id="sprint-plan">
+  <div class="section-inner">
+    <p class="section-label">Execution Roadmap</p>
+    <h2 class="section-title">90-Day Sprint Plan</h2>
+    <div class="section-divider"></div>
+    <p class="section-lead">Structured for a Head of Marketing operating without a dedicated Demand Generation Manager for the first 30 days.</p>
+    <div class="table-wrap" style="margin-bottom:32px;">
+      <table class="dark-table">
+        <thead>
+          <tr><th>Week</th><th>Sprint</th><th>Priority</th><th>Who</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Week 1</td>
+            <td>Define 6 target keywords. Set up Google Ads campaigns. Route paid traffic to developer page, Nylas alternative page, HR technology page, healthcare page. Budget: $4,000 to $6,000 per month. No Performance Max.</td>
+            <td>Paid acquisition live</td>
+            <td>Octave plus Jean</td>
+          </tr>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Week 2</td>
+            <td>Define Fibbler intent thresholds. Build 3 HubSpot sequences (developer self-serve, Head of Product enterprise, healthcare buyer). Test with 10 manual accounts before automation.</td>
+            <td>Fibbler activation</td>
+            <td>Octave with HubSpot</td>
+          </tr>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Week 3</td>
+            <td>Pull 20 contacts from confirmed enterprise accounts (Indeed, iCIMS, Teamtailor, Wise, Docplanner). Send personalised G2 review outreach. 10 outreach per week to avoid review farming detection.</td>
+            <td>G2 review campaign</td>
+            <td>Octave plus Customer Success</td>
+          </tr>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Week 4</td>
+            <td>Set up Google Analytics 4 conversion events. Connect Google Ads to GA4. Set up UTM tracking. Create weekly HubSpot dashboard: pipeline by source, trial starts, demo bookings.</td>
+            <td>Measurement baseline</td>
+            <td>Octave</td>
+          </tr>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Weeks 5 to 6</td>
+            <td>New Demand Generation Manager starts. Handover: paid acquisition performance data, Fibbler workflow (running, not to build), G2 campaign in progress, measurement dashboard. Launch developer newsletter "The Scheduling Stack."</td>
+            <td>DGM onboarded</td>
+            <td>Jean hands to DGM</td>
+          </tr>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Weeks 7 to 8</td>
+            <td>Publish 3 Dev.to articles (repurposed from top blog posts with code examples added). Submit Product Hunt launch for Meeting Agents. Build build-versus-buy calculator for the website.</td>
+            <td>Developer community and economic buyer content</td>
+            <td>DGM plus Jack Fryer</td>
+          </tr>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Weeks 9 to 10</td>
+            <td>Build the Tier 1 Account Based Marketing target list: 50 Application Tracking System vendors and healthcare platforms. Two contacts per account (Head of Product, VP Engineering). Verified emails and LinkedIn profiles.</td>
+            <td>ABM list built</td>
+            <td>Jean plus DGM</td>
+          </tr>
+          <tr>
+            <td style="white-space:nowrap;color:var(--accent);font-weight:600;">Weeks 10 to 12</td>
+            <td>Launch 3-touch Account Based Marketing sequence. Touch 1 (email): one insight about their current scheduling approach plus a relevant case study. Touch 2 (LinkedIn): connection request, one sentence, no pitch. Touch 3 (email): the "if you're building it yourself" cost calculation angle.</td>
+            <td>ABM outreach live</td>
+            <td>Jean plus DGM</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="color:var(--white);font-size:1.1rem;margin-bottom:16px;">Day 90 Targets</h3>
+    <div class="table-wrap">
+      <table class="dark-table">
+        <thead><tr><th>Metric</th><th>Target</th></tr></thead>
+        <tbody>
+          <tr><td>Monthly paid acquisition spend</td><td style="color:var(--accent);font-weight:600;">$6,000 to $8,000 per month</td></tr>
+          <tr><td>Monthly developer trial starts from paid</td><td style="color:var(--accent);font-weight:600;">15 to 30</td></tr>
+          <tr><td>G2 enterprise reviews published</td><td style="color:var(--accent);font-weight:600;">15 to 20</td></tr>
+          <tr><td>Fibbler-triggered outbound sequences running</td><td style="color:var(--accent);font-weight:600;">3 sequences live</td></tr>
+          <tr><td>Account Based Marketing accounts contacted</td><td style="color:var(--accent);font-weight:600;">50</td></tr>
+          <tr><td>Account Based Marketing accounts in active conversation</td><td style="color:var(--accent);font-weight:600;">10</td></tr>
+          <tr><td>Developer newsletter subscribers</td><td style="color:var(--accent);font-weight:600;">500 (launch list)</td></tr>
+          <tr><td>Enterprise demo bookings from Account Based Marketing</td><td style="color:var(--accent);font-weight:600;">3 to 5</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 16. EMAIL PREVIEWS -->
+<section id="email-previews">
+  <div class="section-inner">
+    <p class="section-label">Email Sequences</p>
+    <h2 class="section-title">Two scored outreach emails — ready to send</h2>
+    <div class="section-divider"></div>
+    <div class="email-cards">
+
+      <div class="email-preview">
+        <div class="email-head">
+          <div class="email-meta">To: Octave Auger · Angle: Friction · PSS 87/100</div>
+          <div class="email-subject">nylas is buying the keywords you're ranking for</div>
+          <div class="email-preview-line">Cronofy shows up organically. Nylas shows up in the paid slot above it.</div>
+        </div>
+        <div class="email-body">
+          <p>Octave —</p>
+          <p>Search "scheduling API" or "calendar API for developers" right now. Nylas has paid ads running. Cronofy ranks organically below them.</p>
+          <p>Developers land on Nylas first. Cronofy generates the intent through content and G2. Nylas captures the conversions.</p>
+          <p>With $175 million raised and a full demand gen team, that gap is only going to widen.</p>
+          <p>I mapped the specific keywords where Nylas is taking developer evaluations that Cronofy should be winning. Want me to send it over?</p>
+          <p><strong>Jean</strong></p>
+          <p style="font-size:0.79rem;color:var(--text-muted);">P.S. There are also 200-plus Application Tracking System platforms globally running manual scheduling. Cronofy has active relationships with roughly 20 of them. That is a different kind of gap — and a different email. Happy to cover both.</p>
+        </div>
+        <div class="email-foot">
+          <div class="pss-badge">PSS 87 / 100</div>
+          <div class="pss-verdict">✓ PASS — Send as-is</div>
+        </div>
+      </div>
+
+      <div class="email-preview">
+        <div class="email-head">
+          <div class="email-meta">To: Octave Auger · Angle: Trigger · PSS 84/100</div>
+          <div class="email-subject">before the demand gen hire lands</div>
+          <div class="email-preview-line">Whoever joins inherits what's already in place.</div>
+        </div>
+        <div class="email-body">
+          <p>Octave —</p>
+          <p>The Demand Generation Manager role is live. Most teams wait: hire the person, let them settle, then start building.</p>
+          <p>But whoever joins inherits whatever is in place on day one.</p>
+          <p>The 30-day window before they start is the best time to map the high-intent buyer journey, fix the pages where developer evaluations drop off, and run the first paid test on "scheduling API" and "Nylas alternative" terms.</p>
+          <p>The Demand Generation Manager walks in with a working framework. They get to results in 60 days instead of 90.</p>
+          <p>On a short call I will show you what that first 30 days looks like for Cronofy specifically — channel mix, target account list, and the three pages I'd change first. You will have the full picture whether we work together or not.</p>
+          <p>Worth 20 minutes?</p>
+          <p><strong>Jean</strong></p>
+          <p style="font-size:0.79rem;color:var(--text-muted);">P.S. You built Paddle's developer marketing from scratch. You already know what the end state looks like. The question is how fast to get there.</p>
+        </div>
+        <div class="email-foot">
+          <div class="pss-badge">PSS 84 / 100</div>
+          <div class="pss-verdict">✓ PASS — Trim before sending</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 17. KEY RESULTS -->
+<section id="key-results">
+  <div class="section-inner">
+    <p class="section-label">Key Results Projection</p>
+    <h2 class="section-title">Before vs After 90 Days</h2>
+    <div class="section-divider"></div>
+    <div class="table-wrap">
+      <table class="dark-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th style="color:#ef4444;">Now</th>
+            <th style="color:#10b981;">After 90 Days</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Paid search presence</td>
+            <td style="color:#ef4444;">None</td>
+            <td style="color:#10b981;">3 campaigns live (scheduling API keywords, Nylas comparison, retargeting)</td>
+          </tr>
+          <tr>
+            <td>Developer npm weekly downloads</td>
+            <td style="color:#ef4444;">3,082</td>
+            <td style="color:#10b981;">Target: 6,000-plus (2x via paid and community)</td>
+          </tr>
+          <tr>
+            <td>ABM accounts in pipeline</td>
+            <td style="color:#ef4444;">0</td>
+            <td style="color:#10b981;">20 Application Tracking System and healthcare accounts in active sequence</td>
+          </tr>
+          <tr>
+            <td>Attribution</td>
+            <td style="color:#ef4444;">Dark</td>
+            <td style="color:#10b981;">Full funnel in HubSpot and Google Analytics 4</td>
+          </tr>
+          <tr>
+            <td>Revenue from paid (Year 1)</td>
+            <td style="color:#ef4444;">£0</td>
+            <td style="color:#10b981;font-weight:700;">£1.2M conservative Annual Recurring Revenue</td>
+          </tr>
+          <tr>
+            <td>Demand Generation Manager onboarding</td>
+            <td style="color:#ef4444;">Blank page</td>
+            <td style="color:#10b981;">Working system with performance data, running Fibbler workflows, G2 campaign in progress</td>
+          </tr>
+          <tr>
+            <td>G2 category placement</td>
+            <td style="color:#ef4444;">High Performer, Small Business</td>
+            <td style="color:#10b981;">High Performer or Leader, Enterprise and Mid-Market</td>
+          </tr>
+          <tr>
+            <td>Enterprise demo bookings from ABM</td>
+            <td style="color:#ef4444;">0</td>
+            <td style="color:#10b981;">3 to 5 from the first 50 accounts contacted</td>
+          </tr>
+          <tr>
+            <td>Fibbler intent-triggered outbound sequences</td>
+            <td style="color:#ef4444;">0 live</td>
+            <td style="color:#10b981;">3 sequences running automatically</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 18. CASE STUDY -->
+<section id="case-study">
+  <div class="section-inner">
+    <p class="section-label">Proof of Work</p>
+    <h2 class="section-title">The mechanism that transfers to Cronofy</h2>
+    <div class="section-divider"></div>
+    <div class="case-card">
+      <div class="case-stat">16×</div>
+      <div class="case-sub">paid acquisition scale — Direct to Consumer brand — 7 months</div>
+      <h3>£50,000 to £800,000 monthly spend. One mechanism.</h3>
+      <p>Starting position: £50,000 monthly paid acquisition spend. Single channel. No attribution model. No conversion data feeding back into campaign structure.</p>
+      <p>End position: £800,000 monthly paid acquisition spend. Multi-channel. Full attribution. Cost per acquisition tracked at the campaign, ad set, and creative level. Spend scaling was a function of conversion data, not gut feel.</p>
+      <p>The first 30 days were not about scaling. They were about measurement. Setting up Google Analytics 4 conversion events, connecting paid channels to attribution, and identifying which ad groups were generating profitable customers versus which were burning budget on low-quality clicks. Once the measurement was right, scaling was a formula.</p>
+      <p>Cronofy's paid acquisition challenge is structurally similar. The product is excellent. The landing pages exist. The attribution layer (Google Analytics 4, HubSpot) is in place or can be configured in a week. The 16x direct to consumer scale started with a $50,000 monthly budget and a measurement problem. Cronofy's paid acquisition starts with a $5,000 monthly test budget and three pages that are already conversion-ready. The ceiling is not budget — it is building the data layer quickly enough to justify scaling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 19. GROWTH FEEDBACK LOOPS -->
+<section id="growth-loops">
+  <div class="section-inner">
+    <p class="section-label">Growth Architecture</p>
+    <h2 class="section-title">Three Growth Feedback Loops</h2>
+    <div class="section-divider"></div>
+    <p class="section-lead">Three loops specific to Cronofy's acquisition model. Each loop compounds. None of them require a large team to maintain once they are running.</p>
+    <div class="loops-stack">
+
+      <div class="loop-card">
+        <div class="loop-tag">LOOP 1</div>
+        <h4>The Developer Discovery Loop</h4>
+        <p>Developer searches "scheduling API" → Cronofy paid ad surfaces above Nylas → Developer lands on the developer page → Tries the free sandbox → Makes first API call → Embeds Cronofy into their product → Their end users experience the embedded scheduling → Developer recommends Cronofy to their next team → Next developer searches "scheduling API" and finds Cronofy already recommended → Cronofy's npm downloads grow → Organic visibility increases → Paid budget required to maintain top position decreases.</p>
+        <p style="margin-top:12px;color:var(--red);font-size:0.83rem;">This loop currently runs in reverse. Nylas is the starting point for most developer discoveries. Every developer who starts with Nylas instead of Cronofy exits this loop permanently within the first 30 days of their integration.</p>
+      </div>
+
+      <div class="loop-card">
+        <div class="loop-tag">LOOP 2</div>
+        <h4>The Enterprise Account Based Marketing Loop</h4>
+        <p>Account Based Marketing campaign reaches Head of Product at a Tier 1 Application Tracking System vendor → They book a demo → Demo converts to a pilot → Pilot converts to a Strategic-tier contract → Cronofy team works with that customer to extract a case study (time-to-schedule reduction, engineering hours saved) → Case study published on the website and in the next Account Based Marketing sequence → Next Application Tracking System vendor sees a named peer in the case study → Demo booked → Repeat.</p>
+        <p style="margin-top:12px;font-size:0.83rem;">Cronofy's best existing case studies (Wise: 6 days to 90 minutes. Teamtailor: embedded scheduling for hundreds of customers) are already anchors for this loop. They are not yet being systematically deployed in an Account Based Marketing sequence targeting the 30-plus Application Tracking System platforms that match that profile.</p>
+      </div>
+
+      <div class="loop-card">
+        <div class="loop-tag">LOOP 3</div>
+        <h4>The Test and Learn Paid Loop</h4>
+        <p>Test a paid keyword at $500 → Measure which developer profile converts (company size, vertical, job title in HubSpot) → Learn that "interview scheduling API" converts at lower cost per trial than "calendar API" → Scale the converting keyword → Cut the non-converting keyword → Document the winning keyword-to-landing-page combination → Apply the same logic to LinkedIn paid audience targeting → Test new vertical keyword (HIPAA scheduling API) → Repeat cycle every 4 weeks.</p>
+        <p style="margin-top:12px;font-size:0.83rem;">This loop does not require a large team. It requires a paid media buyer running one $5,000 per month Google Ads account and a HubSpot report checking trial source weekly. The output is a compounding dataset that tells you exactly which developer profile converts and what it costs to acquire them.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 20. FAQS -->
+<section id="faqs">
+  <div class="section-inner">
+    <p class="section-label">Common Questions</p>
+    <h2 class="section-title">FAQs</h2>
+    <div class="section-divider"></div>
+    <div class="faq-stack">
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How is this different from what the Demand Generation Manager hire will do?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">The Demand Generation Manager will own execution once they are in seat. The problem is the 30 to 60 days before they start and the 30 days after they land. Without a working system on day one, the new hire spends their first month building measurement and deciding which keywords to test. With a working system, they spend their first month optimising campaigns that are already generating trial starts. The role of this engagement is to build that working system before the hire arrives and hand it over cleanly.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          How quickly can results show up?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Paid acquisition results show up in 2 to 4 weeks. The first developer trial starts from paid search are visible within 10 days of campaigns going live, assuming the landing pages are already built (they are — developer page, Nylas alternative page, HR technology solutions page exist and are conversion-ready). Fibbler activation shows results within 1 to 2 weeks. Account Based Marketing results take 8 to 12 weeks to reach the pipeline stage — enterprise decisions are not made in a fortnight.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Do you need access to our HubSpot and Google Ads accounts?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Yes. Read access to HubSpot to understand the current contact structure and pipeline setup. Edit access to Google Ads to set up the campaigns. Jean can work within existing account structures or help set up clean campaign structures from scratch if the accounts are new. This is standard for any paid acquisition engagement — the data lives in the accounts you own.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What does the first 30 days look like?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Week 1: Paid acquisition live (6 keywords, 4 landing page destinations, $4,000 to $6,000 per month budget). Week 2: Fibbler thresholds defined, 3 HubSpot sequences built and tested. Week 3: G2 review campaign launched (20 personalised outreach to confirmed enterprise contacts). Week 4: Measurement baseline set (GA4 events, UTM tracking, HubSpot weekly dashboard). Day 30 deliverable: paid acquisition generating developer trial starts, Fibbler triggering outbound sequences, 15 to 20 G2 review requests sent, measurement baseline in place.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          Has this worked for API-first companies before?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">The direct-to-consumer scale case study (£50K to £800K in 7 months) was consumer-facing, not API-first. The mechanism — measurement first, then scale on the converting segments — is identical for API products. The landing pages and keyword targets are different. The logic is the same. Jean has also built 14 Business to Business outreach packages in the last 90 days, primarily for software companies with technical audiences.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          What happens after the Demand Generation Manager starts?
+          <span class="faq-chevron">▼</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Jean transitions from building to advising. The new hire takes ownership of the paid acquisition campaigns, Account Based Marketing sequences, and Fibbler workflows. Jean stays available for 30 days post-handover to answer questions, review performance data, and flag anything that needs adjusting. The goal is not a dependency — it is a Demand Generation Manager who walks into a functioning system and can run it independently within 30 days of starting.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 21. ABOUT + OFFER -->
+<section id="about">
+  <div class="section-inner">
+    <p class="section-label">About Jean &amp; The Offer</p>
+    <h2 class="section-title">Who built this and what the engagement looks like</h2>
+    <div class="section-divider"></div>
+    <div class="about-grid">
+
+      <div class="bio-card">
+        <h3>Jean Mundabi Fala</h3>
+        <div class="bio-subtitle">Founder, MDB Growth Capital</div>
+        <p>Jean works with Business to Business software companies that have good products, good customers, and acquisition systems that have not kept pace with either. MDB is not a marketing agency. There is no retainer-first model.</p>
+        <div class="bio-stats">
+          <div class="bio-stat">
+            <strong>£2.6M</strong>
+            <span>in Google Ads spend managed across financial services and retail clients.</span>
+          </div>
+          <div class="bio-stat">
+            <strong>16×</strong>
+            <span>paid acquisition scale in 7 months — £50K to £800K monthly spend for a Direct to Consumer brand.</span>
+          </div>
+          <div class="bio-stat">
+            <strong>14</strong>
+            <span>Business to Business outreach packages built in the last 90 days.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="offer-card">
+        <h3>The Cronofy 90-Day Offer</h3>
+        <p>Jean builds and launches paid acquisition campaigns, activates the Fibbler intent workflow, launches the G2 review campaign, and builds the Account Based Marketing target list of 50 enterprise Application Tracking System and healthcare platforms — before the Demand Generation Manager starts.</p>
+        <p style="font-weight:600;color:var(--white);margin-bottom:10px;">On day 30, the new hire receives:</p>
+        <ul class="offer-list">
+          <li>Google Ads campaigns live and generating data</li>
+          <li>Fibbler-triggered HubSpot sequences running automatically</li>
+          <li>G2 review campaign in progress (15 to 20 requests sent)</li>
+          <li>Measurement dashboard with baseline conversion data</li>
+          <li>Account Based Marketing target list (50 accounts, 2 contacts each, verified emails)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 22. FINAL CTA + CAL EMBED -->
+<section id="final-cta">
+  <div class="section-inner">
+    <p class="section-label">Next Steps</p>
+    <h2 class="section-title">Two paths forward. Both are low-friction.</h2>
+    <div class="section-divider"></div>
+
+    <div class="final-paths">
+      <div class="path-card">
+        <div class="path-label">Path A</div>
+        <h4>Book 20 Minutes</h4>
+        <p>Jean walks you through the Leak Map on a screen share. You tell him where the priorities don't match what you know internally. The brief gets sharper. No proposal. No deck you didn't ask for. Jean brings the data. You bring the questions.</p>
+        <a href="https://cal.com/jean-m-8f4kbr/15min" class="btn btn-primary" target="_blank" rel="noopener" style="width:100%;justify-content:center;">Book directly →</a>
+      </div>
+      <div class="path-card">
+        <div class="path-label">Path B</div>
+        <h4>Reply "send the audit"</h4>
+        <p>Jean sends the full AAA Acquisition Diagnostic — the complete version of the Leak Map with keyword gap analysis, Account Based Marketing target list draft, and 90-day sprint plan. No call required. Read it on your own time.</p>
+        <a href="mailto:jean@mdbgrowthcapital.com?subject=Send the audit — Cronofy" class="btn btn-outline" style="width:100%;justify-content:center;">jean@mdbgrowthcapital.com</a>
+      </div>
+    </div>
+
+    <div class="cal-section">
+      <h3>Book Your 20-Minute Call</h3>
+      <div class="cal-wrap">
+        <div id="cal-booking-embed" style="height:700px;overflow:scroll"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <p>Prepared exclusively for <span class="teal">Octave Auger, Head of Marketing — Cronofy</span></p>
+    <p>By <span class="teal">Jean Mundabi Fala, CEO — MDB Growth Capital</span></p>
+    <p style="margin-top:12px;">jean@mdbgrowthcapital.com · <a href="https://cal.com/jean-m-8f4kbr/15min" style="color:var(--accent);text-decoration:none;" target="_blank" rel="noopener">cal.com/jean-m-8f4kbr/15min</a></p>
+    <p style="margin-top:8px;">Strategy &amp; GTM research by Jean Mundabi Fala</p>
+  </div>
+</footer>
+
+<!-- CAL.COM EMBED -->
+<script type="text/javascript">
+  (function (C, A, L) {
+    let p = function (a, ar) { a.q.push(ar); };
+    let d = C.document;
+    C.Cal = C.Cal || function () {
+      let cal = C.Cal; let ar = arguments;
+      if (!cal.loaded) {
+        cal.ns = {}; cal.q = cal.q || [];
+        d.head.appendChild(d.createElement("script")).src = A;
+        cal.loaded = true;
+      }
+      if (ar[0] === L) {
+        const api = function () { p(api, arguments); };
+        const namespace = ar[1];
+        api.q = api.q || [];
+        typeof namespace === "string" ? (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar);
+        return;
+      }
+      p(cal, ar);
+    };
+  })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", {origin:"https://cal.com"});
+  Cal("inline", {
+    elementOrSelector: "#cal-booking-embed",
+    calLink: "jean-m-8f4kbr/15min",
+    layout: "month_view"
+  });
+  Cal("ui", {
+    "theme": "dark",
+    "styles": {"branding": {"brandColor": "#00c9b1"}},
+    "hideEventTypeDetails": false,
+    "layout": "month_view"
+  });
+</script>
+
+<!-- SCROLL SPY + FAQ -->
+<script>
+  // Scroll spy
+  const sections = document.querySelectorAll('section[id], footer[id]');
+  const navLinks = document.querySelectorAll('.nav-dot');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  // Video placeholder hide on load
+  const iframe = document.querySelector('#video iframe');
+  const placeholder = document.getElementById('video-placeholder');
+  if (iframe && iframe.src && iframe.src !== 'VIDEO_URL_GOES_HERE') {
+    placeholder.style.display = 'none';
+  }
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>

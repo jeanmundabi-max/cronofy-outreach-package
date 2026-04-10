@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronofy — Where Enterprise Demand Is Going Uncaptured</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --accent: #7c3aed;
+  --accent-light: #f5f3ff;
+  --accent-muted: #c4b5fd;
+  --bg: #ffffff;
+  --bg-alt: #f8fafc;
+  --text: #1e293b;
+  --text-secondary: #64748b;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --radius: 14px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--bg); line-height: 1.75; font-size: 17px; -webkit-font-smoothing: antialiased; }
+.page { max-width: 880px; margin: 0 auto; padding: 0 40px; }
+.top-label { padding: 48px 0 0; font-size: 12px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); }
+.hero { padding: 40px 0 48px; border-bottom: 1px solid var(--border); }
+.hero .eyebrow { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: 0.5px; margin-bottom: 16px; }
+.hero h1 { font-family: 'DM Serif Display', serif; font-size: 44px; color: var(--text); line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 16px; }
+.hero .subline { font-size: 19px; color: var(--text-secondary); line-height: 1.6; max-width: 640px; }
+.section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+.section-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; }
+.section p { margin-bottom: 16px; color: var(--text); font-size: 17px; }
+.section p:last-child { margin-bottom: 0; }
+.core-leak { padding: 48px 0; border-bottom: 1px solid var(--border); }
+.core-leak .section-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; }
+.leak-panel { background: var(--bg-alt); border-left: 4px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 32px 36px; }
+.leak-panel p { margin-bottom: 16px; color: var(--text); font-size: 17px; line-height: 1.75; }
+.leak-panel p:last-of-type { margin-bottom: 0; }
+.leak-callout { margin-top: 24px; padding: 20px 28px; background: var(--accent-light); border-radius: 10px; font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.5; }
+.why-now { padding: 48px 0; border-bottom: 1px solid var(--border); }
+.why-now .section-label { font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 24px; }
+.stat-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+.stat-block { text-align: center; padding: 24px 16px; background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: var(--radius); }
+.stat-block .stat-number { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--accent); line-height: 1.1; margin-bottom: 6px; }
+.stat-block .stat-label { font-size: 13px; color: var(--text-secondary); line-height: 1.4; font-weight: 500; }
+.why-now-prose p { margin-bottom: 16px; color: var(--text); font-size: 17px; line-height: 1.75; }
+.why-now-prose p:last-child { margin-bottom: 0; }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+.card { background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 24px; }
+.card h4 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.35; }
+.card p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 0; }
+.priority { display: flex; gap: 20px; margin-bottom: 20px; padding: 24px 28px; background: var(--bg-alt); border: 1px solid var(--card-border); border-radius: var(--radius); }
+.priority-num { flex-shrink: 0; width: 32px; height: 32px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; margin-top: 2px; }
+.priority-content h4 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.35; }
+.priority-content p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 0; }
+.priority-content .unlocks { margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--accent); }
+.shift { padding: 48px 0; border-bottom: 1px solid var(--border); }
+.shift p { font-size: 18px; color: var(--text); line-height: 1.7; font-weight: 500; }
+.cta { padding: 48px 0; border-bottom: 1px solid var(--border); }
+.cta p { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--text); line-height: 1.35; }
+.doc-footer { padding: 40px 0 64px; }
+.doc-footer p { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+@media (max-width: 700px) {
+  .page { padding: 0 24px; }
+  .hero h1 { font-size: 32px; }
+  .hero .subline { font-size: 17px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .cta p { font-size: 22px; }
+  .section { padding: 36px 0; }
+  .priority { flex-direction: column; gap: 12px; }
+  .leak-panel { padding: 24px; }
+  .leak-callout { font-size: 16px; padding: 16px 20px; }
+  .stat-row { grid-template-columns: 1fr; gap: 12px; }
+  .stat-block .stat-number { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-label">Cronofy — Growth Diagnosis</div>
+
+  <div class="hero">
+    <div class="eyebrow">Prepared for Octave Auger, Head of Marketing</div>
+    <h1>Cronofy Has the Product. Nylas Has the Visibility.</h1>
+    <p class="subline">The scheduling Application Programming Interface market is being won in the demand generation layer, not the product layer. And right now, Cronofy is not competing in that layer.</p>
+  </div>
+
+  <div class="core-leak">
+    <div class="section-label">The Core Leak</div>
+    <div class="leak-panel">
+      <p>You have scheduling infrastructure that powers Wise, Teamtailor, and Docplanner. You have a 4.8-star rating. Your Application Programming Interface outperforms Nylas on compliance, stability, and cross-domain queries. You just closed £15 million from BGF with a mandate to grow.</p>
+      <p>But Nylas is spending $175 million on paid acquisition, developer content at 10-plus articles per month, and a structured Account Based Marketing program. They are visible to every developer who searches "scheduling Application Programming Interface" or "Nylas alternative" right now. Cronofy is not.</p>
+      <p>The result: your best potential customers — large Applicant Tracking System vendors, healthcare platforms, professional services software companies — are finding Nylas first. Not because Nylas is better. Because Nylas shows up and Cronofy does not yet have the demand generation motion to compete in that channel.</p>
+      <div class="leak-callout">Product-led growth got you to 180,000 organisations. The enterprise tier above that requires a different approach entirely.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What This Seems to Indicate</div>
+    <div class="card-grid">
+      <div class="card">
+        <h4>The existing growth model has a ceiling it has not hit yet — but is about to</h4>
+        <p>Product-led growth works when buyers are already looking. It does not create demand among enterprise buyers who are not yet evaluating scheduling Application Programming Interfaces. Teamtailor found Cronofy. The next 50 Applicant Tracking System vendors will not find you the same way.</p>
+      </div>
+      <div class="card">
+        <h4>The £15 million from BGF has created a timing pressure the current team cannot absorb alone</h4>
+        <p>You have 6 people in marketing, no demand generation person in seat, and a board expecting enterprise growth. A new Demand Generation Manager will spend their first 60 days building playbooks from scratch — not running campaigns — unless a foundation already exists.</p>
+      </div>
+      <div class="card">
+        <h4>Cronofy is winning on product but losing at the point of evaluation</h4>
+        <p>When a product manager evaluates calendar Application Programming Interfaces, they look at documentation, developer community, comparison articles, and paid results. Nylas has all four. Cronofy has strong documentation but no developer community and no paid presence on the terms that matter.</p>
+      </div>
+      <div class="card">
+        <h4>The enterprise tier is reachable but untouched</h4>
+        <p>There are 200-plus Applicant Tracking System platforms globally. Cronofy's customers — Indeed, Teamtailor, Greenhouse — prove the model works at scale. But there is no Account Based Marketing motion identifying the next 50 platforms that should be customers. The accounts exist. The outreach does not.</p>
+      </div>
+      <div class="card">
+        <h4>Paid acquisition is starting from zero at the wrong moment</h4>
+        <p>Cal.com raised $25 million and is building developer community and content. Nylas is running paid across every high-intent keyword. Every month without paid acquisition is a month both competitors consolidate mindshare that Cronofy will have to buy back later at a higher cost.</p>
+      </div>
+      <div class="card">
+        <h4>The Fibbler intent signal fires — and then nothing happens</h4>
+        <p>The Demand Generation Manager job description lists Fibbler as a tool already in the stack. Intent data tells you which accounts are researching scheduling Application Programming Interfaces. But without an outbound sequence following up within 24 hours, that signal sits in a dashboard. Warm accounts cool off unanswered.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="why-now">
+    <div class="section-label">Why This Matters Now</div>
+    <div class="stat-row">
+      <div class="stat-block">
+        <div class="stat-number">£15M</div>
+        <div class="stat-label">BGF raise — board now expects enterprise growth on a timeline</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">200+</div>
+        <div class="stat-label">target Applicant Tracking System platforms globally, most unreached by Cronofy today</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">£6–16M</div>
+        <div class="stat-label">estimated uncaptured enterprise annual recurring revenue — from accounts that already match the Greenhouse and Teamtailor profile</div>
+      </div>
+    </div>
+    <div class="why-now-prose">
+      <p>Every month without an Account Based Marketing motion is a month Nylas has the enterprise Applicant Tracking System conversation without Cronofy in the room. Enterprise Applicant Tracking System vendors at the scale of Greenhouse or SmartRecruiters represent $30,000 to $100,000 per year — often across 3 to 5 year terms.</p>
+      <p>The United States market — where 60% of Cronofy's revenue comes from — requires proactive outreach, not passive discovery. United States enterprise buyers do not browse integration marketplaces. They get reached. Standing still in that market is not neutral. It is conceding ground.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">What I Would Fix First</div>
+    <div class="priority">
+      <div class="priority-num">1</div>
+      <div class="priority-content">
+        <h4>Build the Account Based Marketing target list now</h4>
+        <p>A list of 50 Applicant Tracking System vendors and healthcare platforms — with decision-makers identified, Fibbler intent signals tagged, and accounts prioritised by tier — should exist before any campaign launches. The first 30 days of demand generation should be spent executing, not researching. This is the infrastructure that makes every other motion faster.</p>
+        <div class="unlocks">Unlocks: the Demand Generation Manager runs campaigns from day one instead of building the foundation.</div>
+      </div>
+    </div>
+    <div class="priority">
+      <div class="priority-num">2</div>
+      <div class="priority-content">
+        <h4>Activate paid acquisition on the three highest-intent terms now</h4>
+        <p>"Scheduling Application Programming Interface", "calendar Application Programming Interface for developers", and "Nylas alternative" are terms developers search when they are 30 to 60 days from a purchase decision. Every week without paid presence on these terms sends those leads to Nylas by default.</p>
+        <div class="unlocks">Unlocks: inbound from developers who are evaluating right now, not after a 60-day ramp.</div>
+      </div>
+    </div>
+    <div class="priority">
+      <div class="priority-num">3</div>
+      <div class="priority-content">
+        <h4>Separate the developer acquisition track from the enterprise buyer track</h4>
+        <p>A developer self-serving on the Emerging plan at $819 per month is a different buyer from the product director at a 200-person Applicant Tracking System company evaluating a Strategic contract. One content strategy means neither converts well. Developer buyers need comparison content and community. Enterprise buyers need account-level targeting and case-study-led outreach.</p>
+        <div class="unlocks">Unlocks: higher conversion at both ends. No more messaging that is too technical for buyers and too commercial for developers.</div>
+      </div>
+    </div>
+    <div class="priority">
+      <div class="priority-num">4</div>
+      <div class="priority-content">
+        <h4>Connect Fibbler signals to a live outbound sequence</h4>
+        <p>Account-level intent should trigger an outbound sequence within 24 hours of a signal firing. Building the connection between Fibbler, HubSpot, and a three-step sequence takes about two weeks. It does not require the Demand Generation Manager to be in seat.</p>
+        <div class="unlocks">Unlocks: warm intent signals convert into conversations instead of going cold in a dashboard.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shift">
+    <div class="section-label">The Shift</div>
+    <p>Right now, Cronofy's enterprise growth depends on who happens to find the product. The Teamtailor and Docplanner wins prove the model works — but they were not systematically generated. The next stage is not working harder with the same model. It is adding a structured layer on top of product-led growth: Account Based Marketing to the accounts that should be customers, paid acquisition to capture developers who are evaluating now, and intent signals that trigger outreach rather than sit in a dashboard. That shift — from passive discovery to active enterprise capture — is what the BGF investment was designed to fund. The question is how fast it gets built.</p>
+  </div>
+
+  <div class="cta">
+    <p>Which of these feels like the most urgent gap from your side right now — the Account Based Marketing target list, the paid acquisition setup, or getting the Fibbler signals connected to outbound?</p>
+  </div>
+
+  <footer class="doc-footer">
+    <p>Prepared for Octave Auger, Head of Marketing at Cronofy</p>
+    <p>By Jean Mundabi Fala, Chief Executive Officer — MDB Growth Capital</p>
+    <p>Strategy and GTM research by Jean Mundabi Fala</p>
+  </footer>
+
+</div>
+</body>
+</html>
